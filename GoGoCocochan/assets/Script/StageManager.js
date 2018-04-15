@@ -9,12 +9,12 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 var State = cc.Enum({
     READY: 0,
-    WAINTNG_WAVE: 1,
+    WAITING_WAVE: 1,
     RUNNING: 2,
     GAMEOVER: 9
 });
 
-var UserData = {
+var Data = {
     maxWave: 1,
     highScore: 0
 };
@@ -25,7 +25,7 @@ cc.Class({
     properties: {
         gameOverLayout:{
             default: null,
-            type: cc.Node,
+            type: cc.Node
         },
         blockPrefab: {
             default: null,
@@ -86,7 +86,7 @@ cc.Class({
             default: null,
             type: cc.ParticleSystem
         },
-        _userData: null,
+        _data: null,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -96,45 +96,10 @@ cc.Class({
 
     onLoad: function() {
         // 最初のwaveを生成
+        this.readUserData();
         this.createWave(400 + this.blockDistance + this._addDistance);
         this._state = State.RUNNING;
         this._bgmID = cc.audioEngine.play(this.stageBGM, true, 0.1);
-        this.readUserData();
-    },
-
-    execGameOver: function(){
-        // 衝突判定無効化
-        cc.director.getCollisionManager().enabled = false;
-        // ステート変更
-        this._state = State.GAMEOVER;
-        // ダイアログ表示
-        this.gameOverLayout.active = true;
-        // 
-        cc.audioEngine.stop(this._bgmID);
-        this._bgmID = -1;
-
-        //スコア保存
-        //小数点切り捨て
-        var score = Math.floor(this._score);
-        // 
-        var scoreLabel = this.gameOverLayout.getChildByName('Score').getComponent(cc.Label);
-        scoreLabel.string = 'Score: ' + score;
-        // ハイスコア更新
-        if(this._userData.highScore < score){
-            this._userData.highScore = score;
-            this.gameOverLayout.getChildByName('newRecord').active = true;
-        }else{
-            // 更新がない場合は非表示
-            this.gameOverLayout.getChildByName('newRecord').active = false;
-        }
-        var highScoreLabel = this.gameOverLayout.getChildByName('highScore').getComponent(cc.Label);
-        highScoreLabel.string = '(HighScore: ' + this._userData.highScore + ')';
-        // wave更新
-        if(this._userData.maxWave < this._wave){
-            this._userData = this._wave;
-        }
-        // Save
-        this.writeUserData();
     },
 
     start () {
@@ -143,17 +108,18 @@ cc.Class({
 
     // データ保存
     writeUserData: function(){
-        cc.sys.localStorage.setItem('UserData', JSON.stringify(this._userData));
+        cc.sys.localStorage.setItem('Data', JSON.stringify(this._data));
     },
 
     readUserData: function(){
-        var data = cc.sys.localStorage.getItem('UserData');
-        cc.log(data);   // 確認用
+        var data = cc.sys.localStorage.getItem('Data');
+        //cc.log(data);   // 確認用
         if(data !== null){
-            this._userData = JSON.parse(data);
+            this._data = JSON.parse(data);
         }else{
-            this._userData = UserData;
+            this._data = Data;
         }
+        cc.log('highScore:' + this._data.highScore);
     },
 
     update (dt) {
@@ -266,5 +232,41 @@ cc.Class({
 
     restartStage: function(){
         cc.director.loadScene('GameMain');
-    }
+    },
+
+    execGameOver: function(){
+        // 衝突判定無効化
+        cc.director.getCollisionManager().enabled = false;
+        // ステート変更
+        this._state = State.GAMEOVER;
+        // ダイアログ表示
+        this.gameOverLayout.active = true;
+        // 
+        cc.audioEngine.stop(this._bgmID);
+        this._bgmID = -1;
+
+        //スコア保存
+        //小数点切り捨て
+        var score = Math.floor(this._score);
+        // 
+        var scoreLabel = this.gameOverLayout.getChildByName('Score').getComponent(cc.Label);
+        scoreLabel.string = 'Score: ' + score;
+        // ハイスコア更新
+        if(this._data.highScore < score){
+            this._data.highScore = score;
+            this.gameOverLayout.getChildByName('newRecord').active = true;
+        }else{
+            // 更新がない場合は非表示
+            this.gameOverLayout.getChildByName('newRecord').active = false;
+        }
+        var highScoreLabel = this.gameOverLayout.getChildByName('highScore').getComponent(cc.Label);
+        highScoreLabel.string = '(HighScore: ' + this._data.highScore + ')';
+        // wave更新
+        if(this._data.maxWave < this._wave){
+            this._data.maxWave = this._wave;
+        }
+        // Save
+        this.writeUserData();
+    },
+
 });
