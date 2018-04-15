@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "85d61466-c1b3-4486-a588-53bdea6a7fc4",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "PlayerInvincible": {
+      "ver": "1.0.3",
+      "uuid": "4dbf3129-8aaa-403a-9bfb-c3372c47b7ac",
+      "rawTextureUuid": "85d61466-c1b3-4486-a588-53bdea6a7fc4",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": 0.5,
+      "trimX": 1,
+      "trimY": 0,
+      "width": 47,
+      "height": 45,
+      "rawWidth": 48,
+      "rawHeight": 46,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

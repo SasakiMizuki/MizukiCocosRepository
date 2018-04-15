@@ -1,0 +1,37 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "PlayerJump",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.21666666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "2473461c-e71a-444b-bbce-8a1a338feb97"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "7c5e4c8e-0282-4bdb-9d44-6735a7a6a47b"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "2473461c-e71a-444b-bbce-8a1a338feb97"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
